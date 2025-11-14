@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloody | Ultimate Gaming Hardware</title>
+    
+<script src="https://cdn.tailwindcss.com"></script>
+    
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@700&display=swap" rel="stylesheet">
+    
+<script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom Tailwind Configuration */
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bloody-dark': '#0f0f0f', /* Deep Black */
+                        'bloody-red': '#cc0000', /* Crimson Red */
+                        'bloody-accent': '#d4af37', /* Subtle Gold/Brass */
+                        'bloody-light': '#e5e7eb', /* Light Gray for contrast */
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        logo: ['Teko', 'sans-serif'], /* New logo font */
+                    },
+                }
+            }
+        }
+
+        /* Custom Styling for Luxury Feel and Logo */
+        body {
+            background-color: #0f0f0f; /* Use bloody-dark as background */
+            font-family: 'Inter', sans-serif;
+            color: #e5e7eb;
+        }
+
+        .luxury-card {
+            background-color: #1a1a1a;
+            box-shadow: 0 4px 15px rgba(204, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .luxury-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(204, 0, 0, 0.4);
+        }
+
+        /* BLOODY Logo Style - Aggressive and Premium */
+        .bloody-logo {
+            font-family: 'Teko', sans-serif;
+            font-size: 2.5rem; /* Bigger and bolder */
+            font-weight: 700;
+            letter-spacing: -3px;
+            text-transform: uppercase;
+            line-height: 1;
+            color: #cc0000; /* ALL RED */
+            text-shadow: 0 0 5px rgba(204, 0, 0, 0.8);
+        }
+
+        /* Slideshow specific CSS */
+        .slider-container {
+            position: relative;
+            overflow: hidden;
+            height: 60vh; /* Responsive height */
+            min-height: 400px;
+        }
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: opacity 1.5s ease-in-out;
+            opacity: 0;
+        }
+        .slide.active {
+            opacity: 1;
+            z-index: 10;
+        }
+        .slide-content {
+            background-size: cover;
+            background-position: center;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 5%;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+        }
+        
+        /* Mobile Focus */
+        @media (max-width: 768px) {
+            .slide-content {
+                justify-content: center;
+                text-align: center;
+            }
+            .slide-content h2, .slide-content p {
+                max-width: 90%;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Stats specific styling */
+        .stat-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            background-color: #1a1a1a;
+            border-left: 3px solid #cc0000;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen">
+
+    
+<header class="sticky top-0 z-50 bg-bloody-dark shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+<a href="#" class="flex-shrink-0 flex items-center space-x-2">
+                    
+<img 
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2JOCt5UnAGuaqBpAM0q3pN4GAUMZ8DvLHVg&s" 
+                        alt="Bloody Icon Logo" 
+                        onerror="this.onerror=null; this.src='https://placehold.co/32x32/cc0000/ffffff?text=B'"
+                        class="h-8 w-auto" 
+                    >
+                    
+<span class="bloody-logo">BLOODY</span>
+                </a>
+
+                
+<!-- HIDDEN DESKTOP NAVIGATION - Links moved to the Hamburger Menu -->
+<nav class="hidden space-x-8 items-center text-sm font-semibold uppercase">
+                    <a href="#products" class="text-bloody-light hover:text-bloody-red transition duration-200">Products</a>
+                    <a href="#choose-us" class="text-bloody-light hover:text-bloody-red transition duration-200">Why Bloody?</a>
+                    <a href="#engineering" class="text-bloody-light hover:text-bloody-red transition duration-200">Engineering</a>
+                    <a href="#experience" class="text-bloody-light hover:text-bloody-red transition duration-200">Experience</a>
+                    <a href="#custom-build" class="text-bloody-light hover:text-bloody-red transition duration-200">Custom Build</a>
+                </nav>
+
+                
+<div class="flex items-center space-x-4">
+                    
+<button id="auth-btn" onclick="toggleModal('authModal')" class="inline-flex items-center px-4 py-2 border border-bloody-accent text-sm font-medium rounded-lg text-bloody-accent hover:bg-bloody-accent hover:text-bloody-dark transition duration-300">
+                        Login / Sign Up
+                    </button>
+
+                    
+<button onclick="toggleModal('cartModal')" class="relative p-2 rounded-full hover:bg-gray-800 transition duration-300">
+                        <i data-lucide="shopping-cart" class="w-6 h-6 text-bloody-accent"></i>
+                        <span id="cart-count" class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-bloody-red rounded-full">0</span>
+                    </button>
+
+                    
+<!-- HAMBURGER BUTTON - Now visible on all screen sizes -->
+<button id="hamburger-btn" class="p-2 rounded-lg hover:bg-gray-800 transition duration-300">
+                        <i data-lucide="menu" class="w-6 h-6 text-bloody-light"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        
+<!-- MOBILE MENU - Now toggles visibility on all screen sizes -->
+<div id="mobile-menu" class="hidden bg-bloody-dark border-t border-gray-800">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-sm font-semibold">
+                <!-- Anchor links now close the menu on click -->
+                <a href="#products" onclick="closeMobileMenu()" class="block px-3 py-2 rounded-md text-bloody-light hover:bg-gray-800 hover:text-bloody-red">Products</a>
+                <a href="#choose-us" onclick="closeMobileMenu()" class="block px-3 py-2 rounded-md text-bloody-light hover:bg-gray-800 hover:text-bloody-red">Why Bloody?</a>
+                <a href="#engineering" onclick="closeMobileMenu()" class="block px-3 py-2 rounded-md text-bloody-light hover:bg-gray-800 hover:text-bloody-red">Engineering</a>
+                <a href="#experience" onclick="closeMobileMenu()" class="block px-3 py-2 rounded-md text-bloody-light hover:bg-gray-800 hover:text-bloody-red">Experience</a>
+                <a href="#custom-build" onclick="closeMobileMenu()" class="block px-3 py-2 rounded-md text-bloody-light hover:bg-gray-800 hover:text-bloody-red">Custom Build</a>
+                <button onclick="toggleModal('authModal'); closeMobileMenu();" class="w-full text-left px-3 py-2 rounded-md text-bloody-accent hover:bg-gray-800 hover:text-white border border-transparent hover:border-bloody-accent">Login / Sign Up</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        
+<section id="hero" class="slider-container">
+            
+<div class="slide active" data-index="0">
+                <div class="slide-content" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJfk7-uvOz29cJmNqSvpjIcr4dgiL4eZzgNNO_FucM-7v3q_LtzM2siyLv&s=10');">
+                    <div class="text-white z-20 max-w-lg">
+                        <p class="text-lg text-bloody-red font-bold uppercase tracking-widest mb-2">Unleash Power</p>
+                        <h2 class="text-5xl lg:text-7xl font-extrabold mb-4 leading-tight">THE DOMINATOR</h2>
+                        <p class="text-xl mb-6 text-bloody-light">Experience gaming beyond reality with our pre-built 4K ultra rigs. Zero compromise performance.</p>
+                        <a href="#products" class="inline-block px-8 py-3 bg-bloody-red text-white text-lg font-semibold rounded-full luxury-card hover:bg-red-800 transition duration-300">Shop PCs Now</a>
+                    </div>
+                </div>
+            </div>
+            
+<div class="slide" data-index="1">
+                <div class="slide-content" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaFQwG0_OKoHxt619mHcKJcy3xIz2d1gxcrjnctqrjzAMwYkRVq67vn83h&s=10');">
+                    <div class="text-white z-20 max-w-lg">
+                        <p class="text-lg text-bloody-accent font-bold uppercase tracking-widest mb-2">Tactical Edge</p>
+                        <h2 class="text-5xl lg:text-7xl font-extrabold mb-4 leading-tight">PRECISION REFINED</h2>
+                        <p class="text-xl mb-6 text-bloody-light">Mechanical keyboards, zero-lag mice, and immersive 7.1 audio. Gear built for winners.</p>
+                        <a href="#products" class="inline-block px-8 py-3 bg-bloody-accent text-bloody-dark text-lg font-semibold rounded-full luxury-card hover:bg-yellow-600 transition duration-300">View Gear</a>
+                    </div>
+                </div>
+            </div>
+            
+<div class="slide" data-index="2">
+                <div class="slide-content" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3nR0py-gdBOrs9xdVPfdDDKeGcXcNdMghKyuDb3vpAA&s=10');">
+                    <div class="text-white z-20 max-w-lg">
+                        <p class="text-lg text-bloody-red font-bold uppercase tracking-widest mb-2">Console Mastery</p>
+                        <h2 class="text-5xl lg:text-7xl font-extrabold mb-4 leading-tight">MASTER YOUR GAME</h2>
+                        <p class="text-xl mb-6 text-bloody-light">Custom controllers and PlayStation accessories that redefine tactile feedback and responsiveness.</p>
+                        <a href="#products" class="inline-block px-8 py-3 bg-bloody-red text-white text-lg font-semibold rounded-full luxury-card hover:bg-red-800 transition duration-300">Explore Controllers</a>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute inset-0 bg-black opacity-30 z-5"></div>
+        </section>
+
+        
+<section id="choose-us" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <h2 class="text-4xl font-bold text-center text-bloody-red mb-4 uppercase">The Bloody Advantage</h2>
+            <p class="text-center text-xl text-gray-400 mb-12">Why settle for gear when you can command an arsenal? Every product is engineered for elite performance.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="luxury-card p-6 rounded-xl">
+                    <i data-lucide="zap" class="w-10 h-10 text-bloody-accent mx-auto mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-bloody-light">Zero-Lag Optics</h3>
+                    <p class="text-gray-400 text-sm">Our patented light strike technology ensures an instantaneous 0.2ms response time. Physical switches are a bottleneck. **We eliminate latency.**</p>
+                </div>
+                <div class="luxury-card p-6 rounded-xl">
+                    <i data-lucide="shield-check" class="w-10 h-10 text-bloody-accent mx-auto mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-bloody-light">Aerospace Durability</h3>
+                    <p class="text-gray-400 text-sm">Crafted with aircraft-grade aluminum, braided Kevlar cables, and titanium components. **Built for millions of clicks and generations of gaming.**</p>
+                </div>
+                <div class="luxury-card p-6 rounded-xl">
+                    <i data-lucide="headset" class="w-10 h-10 text-bloody-accent mx-auto mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-bloody-light">Elite 24/7 Support</h3>
+                    <p class="text-gray-400 text-sm">Access to dedicated product specialists and technical engineers, anytime. When the battle calls, **we guarantee your hardware is ready.**</p>
+                </div>
+            </div>
+        </section>
+        
+        
+<!-- PERFORMANCE METRICS SECTION -->
+<section id="stats" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 my-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                
+<!-- Left Column: Headline and Description -->
+<div class="md:pr-12">
+                    <p class="text-sm font-semibold text-bloody-red uppercase mb-2 tracking-widest">PROOF OF POWER</p>
+                    <h2 class="text-5xl font-extrabold text-bloody-light mb-4 leading-tight">
+                        Dominating the <span class="text-bloody-red">Digital Battlefield</span>
+                    </h2>
+                    <p class="text-gray-400 text-lg">
+                        Our hardware isn't just fast—it's statistically superior. These metrics solidify our elite status and represent the raw, proven performance advantage you gain with Bloody.
+                    </p>
+                </div>
+
+                
+<!-- Right Column: Stats Grid -->
+<div class="grid grid-cols-2 gap-6 stats-grid">
+                    
+<!-- Stat 1: Response Time (Latency) -->
+<div class="stat-item">
+                        <i data-lucide="gauge" class="w-10 h-10 text-bloody-accent mr-4 flex-shrink-0"></i>
+                        <div>
+                            <p class="text-4xl font-extrabold text-white leading-none">
+                                0.2 <small class="text-xl font-normal text-bloody-red">ms</small>
+                            </p>
+                            <p class="text-xs text-gray-400 uppercase font-semibold">Optical Response Time</p>
+                        </div>
+                    </div>
+
+                    
+<!-- Stat 2: Global Community (Players) -->
+<div class="stat-item">
+                        <i data-lucide="users" class="w-10 h-10 text-bloody-accent mr-4 flex-shrink-0"></i>
+                        <div>
+                            <p class="text-4xl font-extrabold text-white leading-none">
+                                1.8 <small class="text-xl font-normal text-bloody-red">M</small>
+                            </p>
+                            <p class="text-xs text-gray-400 uppercase font-semibold">Bloody Global Players</p>
+                        </div>
+                    </div>
+
+                    
+<!-- Stat 3: Durability (Lifespan) -->
+<div class="stat-item">
+                        <i data-lucide="shield-check" class="w-10 h-10 text-bloody-accent mr-4 flex-shrink-0"></i>
+                        <div>
+                            <p class="text-4xl font-extrabold text-white leading-none">
+                                100 <small class="text-xl font-normal text-bloody-red">Million</small>
+                            </p>
+                            <p class="text-xs text-gray-400 uppercase font-semibold">Keystroke Lifespan</p>
+                        </div>
+                    </div>
+
+                    
+<!-- Stat 4: Deployment (Sales) -->
+<div class="stat-item">
+                        <i data-lucide="cpu" class="w-10 h-10 text-bloody-accent mr-4 flex-shrink-0"></i>
+                        <div>
+                            <p class="text-4xl font-extrabold text-white leading-none">
+                                46,200 <small class="text-xl font-normal text-bloody-red">+</small>
+                            </p>
+                            <p class="text-xs text-gray-400 uppercase font-semibold">Custom Rigs Deployed</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        
+<section id="products" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <h2 class="text-4xl font-bold text-center text-bloody-red mb-12 uppercase">FEATURED HARDWARE</h2>
+            <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+</div>
+        </section>
+
+        
+<!-- TECHNOLOGY & ENGINEERING SECTION - MOVED HERE -->
+<section id="engineering" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-gray-900/50 rounded-xl my-12">
+            <h2 class="text-4xl font-bold text-center text-bloody-light mb-12 uppercase">Technology & Engineering: The Core Difference</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                
+<div class="p-6 luxury-card rounded-xl border-l-4 border-bloody-red shadow-lg">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <i data-lucide="scan" class="w-8 h-8 text-bloody-red"></i>
+                        <h3 class="text-2xl font-semibold text-bloody-accent">Infrared Light Strike (LS)</h3>
+                    </div>
+                    <p class="text-gray-400">Forget mechanical delay. Our optical switches use infrared light to register keystrokes instantly. This **eliminates debounce delay** and gives you an absolute competitive edge with a **0.2ms response time**, making Bloody hardware demonstrably faster than any traditional setup.</p>
+                </div>
+
+                
+<div class="p-6 luxury-card rounded-xl border-l-4 border-bloody-accent shadow-lg">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <i data-lucide="battery-charging" class="w-8 h-8 text-bloody-accent"></i>
+                        <h3 class="text-2xl font-semibold text-bloody-red">Optimized Power Flow</h3>
+                    </div>
+                    <p class="text-gray-400">Our wireless peripherals feature a proprietary power management chip that guarantees **signal stability and extreme efficiency**. Enjoy 100+ hours of continuous, uncompromised gaming with **zero signal dropout or latency**—even in the most crowded wireless environments.</p>
+                </div>
+
+                
+<div class="p-6 luxury-card rounded-xl border-l-4 border-bloody-accent shadow-lg">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <i data-lucide="hammer" class="w-8 h-8 text-bloody-accent"></i>
+                        <h3 class="text-2xl font-semibold text-bloody-red">Unbreakable Construction</h3>
+                    </div>
+                    <p class="text-gray-400">From the aluminum keyboard plates to the high-density polymer chassis in our mice, every material choice is dictated by performance and longevity. **100 million keystroke lifespan** guaranteed. Built to survive the most intense gaming sessions.</p>
+                </div>
+                
+                
+<div class="p-6 luxury-card rounded-xl border-l-4 border-bloody-red shadow-lg">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <i data-lucide="settings" class="w-8 h-8 text-bloody-red"></i>
+                        <h3 class="text-2xl font-semibold text-bloody-accent">Macro Precision Suite</h3>
+                    </div>
+                    <p class="text-gray-400">Access our powerful, intuitive software suite for precise macro creation, DPI fine-tuning, and advanced RGB customization. Save profiles directly to onboard memory for **competition-ready hardware configurations** on any machine.</p>
+                </div>
+            </div>
+        </section>
+
+
+        
+<section id="experience" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 my-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center luxury-card p-8 rounded-xl">
+                <div>
+                    <!-- Updated image source for "Feel Every Victory" -->
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMlbdw5lT_-VRyV-DM7jfkkmOwmtDnyA8pRh9RRLEOcu-RhwqL1OlbeHDz&s=10" alt="Immersive Experience" class="rounded-lg shadow-2xl">
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-bloody-accent uppercase mb-2">Beyond the Game</p>
+                    <h2 class="text-4xl font-bold text-white mb-4">Feel Every Victory</h2>
+                    <p class="text-gray-400 mb-4">This isn't just hardware; it's an extension of your will. It's the cold, metallic touch of the aluminum keyboard. It's the satisfying click of an optical switch that fires before your opponent can think. It's the 7.1 surround sound that places you *inside* the map.</p>
+                    <p class="text-gray-300">The Bloody experience is about removing the barrier between gamer and game, leaving only pure, unadulterated performance. **When you use Bloody, you are the meta.**</p>
+                </div>
+            </div>
+        </section>
+
+
+        
+<section id="custom-build" class="bg-gray-900 py-20 mt-12">
+            <div class="max-w-5xl mx-auto text-center px-4">
+                <i data-lucide="wrench" class="w-12 h-12 text-bloody-accent mx-auto mb-4"></i>
+                <h3 class="text-4xl font-extrabold text-white mb-4">DESIGN YOUR DREAM RIG</h3>
+                <p class="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">Don't settle for pre-built limitations. Our engineers are standing by to hand-craft a one-of-a-kind, liquid-cooled masterpiece, built to your exact specifications. From custom hardline tubing to delidded CPUs, no request is too extreme.</p>
+                <a href="#" class="inline-flex items-center px-8 py-4 bg-bloody-accent text-bloody-dark text-xl font-bold rounded-xl luxury-card hover:bg-yellow-600 transition duration-300">
+                    <i data-lucide="drafting-compass" class="w-6 h-6 mr-2"></i>
+                    START YOUR CUSTOM BUILD
+                </a>
+            </div>
+        </section>
+    </main>
+
+    
+<footer class="bg-bloody-dark border-t border-gray-800">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-bloody-accent font-semibold mb-4 uppercase">Products</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#products" class="hover:text-bloody-red">Featured Hardware</a></li>
+                        <li><a href="#products" class="hover:text-bloody-red">Keyboards & Mice</a></li>
+                        <li><a href="#products" class="hover:text-bloody-red">Headsets</a></li>
+                        <li><a href="#products" class="hover:text-bloody-red">Controllers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-bloody-accent font-semibold mb-4 uppercase">Company</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#choose-us" class="hover:text-bloody-red">Why Bloody?</a></li>
+                        <li><a href="#engineering" class="hover:text-bloody-red">Engineering</a></li>
+                        <li><a href="#experience" class="hover:text-bloody-red">Our Experience</a></li>
+                        <li><a href="#custom-build" class="hover:text-bloody-red">Custom Builds</a></li>
+                    </ul>
+                </div>
+                <div class="col-span-2 md:col-span-1">
+                    <h4 class="text-bloody-accent font-semibold mb-4 uppercase">Stay Connected</h4>
+                    <form onsubmit="return false;" class="flex space-x-2">
+                        <input type="email" placeholder="Email for exclusive deals" class="flex-grow p-2 rounded-lg bg-gray-800 text-white border border-gray-700 focus:ring-bloody-red focus:border-bloody-red" required>
+                        <button type="submit" class="p-2 bg-bloody-red rounded-lg text-white hover:bg-red-700 transition"><i data-lucide="send" class="w-5 h-5"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="mt-12 border-t border-gray-800 pt-8 text-center text-sm text-gray-500">
+                &copy; <span id="current-year"></span> Bloody Gaming Hardware. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+
+    
+<div id="cartModal" class="fixed inset-0 bg-black bg-opacity-75 z-[100] hidden flex justify-end">
+        <div class="bg-bloody-dark w-full md:w-96 overflow-y-auto transform transition-transform duration-300 translate-x-full" id="cart-drawer">
+            <div class="p-6 h-full flex flex-col">
+                <div class="flex justify-between items-center pb-4 border-b border-gray-700">
+                    <h3 class="text-2xl font-bold text-bloody-red">Your Arsenal</h3>
+                    <button onclick="toggleModal('cartModal')" class="text-gray-400 hover:text-white transition">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+
+                <div id="cart-items-container" class="flex-grow py-4 space-y-4">
+                    
+<p class="text-gray-500 text-center py-10">Your cart is empty. Acquire gear.</p>
+                </div>
+
+                <div id="cart-summary" class="pt-4 border-t border-gray-700">
+                    <div class="flex justify-between items-center text-xl font-bold mb-4">
+                        <span>Total:</span>
+                        <span id="cart-total-display" class="text-bloody-accent">Rs 0.00</span>
+                    </div>
+                    <button onclick="toggleModal('orderModal'); toggleModal('cartModal')" id="checkout-btn" class="w-full py-3 bg-bloody-red text-white font-semibold rounded-lg luxury-card hover:bg-red-700 transition duration-300 disabled:opacity-50" disabled>
+                        Place Order
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+<div id="orderModal" class="fixed inset-0 bg-black bg-opacity-75 z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-bloody-dark w-full max-w-lg rounded-xl shadow-2xl p-6 luxury-card transform transition-all duration-300 scale-95" id="order-form-container">
+            <div class="flex justify-between items-center pb-4 border-b border-gray-700">
+                <h3 class="text-2xl font-bold text-bloody-red">Confirm Acquisition</h3>
+                <button onclick="toggleModal('orderModal')" class="text-gray-400 hover:text-white transition">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <form id="order-form" class="mt-4 space-y-4">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-300 mb-1">Full Name</label>
+                    <input type="text" id="name" required class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:ring-bloody-red focus:border-bloody-red" placeholder="John 'The Slayer' Doe">
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
+                    <input type="email" id="email" required class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:ring-bloody-red focus:border-bloody-red" placeholder="slayer@bloody.com">
+                </div>
+                <div>
+                    <label for="address" class="block text-sm font-medium text-gray-300 mb-1">Shipping Address</label>
+                    <textarea id="address" rows="3" required class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:ring-bloody-red focus:border-bloody-red" placeholder="101 Deathmatch Lane, Sector 7"></textarea>
+                </div>
+                <div class="text-xl font-bold pt-2">
+                    Total Charge: <span id="form-total-display" class="text-bloody-accent">Rs 0.00</span>
+                </div>
+                <p id="order-message" class="text-green-500 font-semibold hidden">Your order has been placed! Awaiting confirmation.</p>
+
+                <button type="submit" class="w-full py-3 bg-bloody-accent text-bloody-dark font-semibold rounded-lg luxury-card hover:bg-yellow-600 transition duration-300">
+                    Confirm & Execute Order
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    
+<div id="authModal" class="fixed inset-0 bg-black bg-opacity-75 z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-bloody-dark w-full max-w-sm rounded-xl shadow-2xl p-6 luxury-card transform transition-all duration-300 scale-95">
+            <div class="flex justify-between items-center pb-4 border-b border-gray-700">
+                <h3 class="text-2xl font-bold text-bloody-red">AUTHORIZATION</h3>
+                <button onclick="toggleModal('authModal')" class="text-gray-400 hover:text-white transition">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            
+            <form id="auth-form" class="mt-4 space-y-4">
+                <p id="auth-status" class="text-center text-sm font-semibold text-red-500 hidden"></p>
+                <div>
+                    <label for="auth-email" class="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
+                    <input type="text" id="auth-email" required class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:ring-bloody-red focus:border-bloody-red" placeholder="user@domain.com">
+                </div>
+                <div>
+                    <label for="auth-password" class="block text-sm font-medium text-gray-300 mb-1">Access Key (Password)</label>
+                    <input type="password" id="auth-password" required class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:ring-bloody-red focus:border-bloody-red" placeholder="SecretCode123">
+                </div>
+
+                <button type="submit" class="w-full py-3 bg-bloody-red text-white font-semibold rounded-lg luxury-card hover:bg-red-700 transition duration-300">
+                    <i data-lucide="log-in" class="w-5 h-5 inline mr-2"></i> Initiate Login
+                </button>
+            </form>
+
+            <button onclick="handleLogin('Guest')" class="w-full py-3 mt-3 bg-gray-800 text-bloody-accent font-semibold rounded-lg luxury-card hover:bg-gray-700 transition duration-300">
+                <i data-lucide="user-check" class="w-5 h-5 inline mr-2"></i> Proceed as Guest
+            </button>
+        </div>
+    </div>
+
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // --- GLOBAL STATE & DATA ---
+
+        let isLoggedIn = false;
+        let userName = '';
+
+        // Product definitions (highly detailed)
+        // Prices converted from USD to PKR (Approx. 1 USD = 280 PKR)
+        const products = [
+            { id: 101, name: "Dominator Gaming PC (RTX 5090)", category: "Gaming PC", price: 979997.00, description: "Liquid-cooled Ryzen 9, 64GB DDR5 8000MHz RAM, and custom RGB chassis. Guaranteed 240FPS in 4K resolution. Zero thermal throttling.", 
+              image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQNTFlMyZrpu1u_PMyCNCRQV3K9_BPhDXnL6EvMnlR2QqxAACiwMVdSaw&s=10" },
+            { id: 102, name: "Crimson Strike Optical Keyboard", category: "Keyboard", price: 55997.00, description: "Patented Light Strike optical switches (0.2ms latency). Double-shot PBT keycaps. Aerospace aluminum frame with dynamic per-key RGB.", 
+              image: "https://cdn.shopify.com/s/files/1/1970/9437/products/JC2735-C_1024x1024.jpg?v=1558574034" },
+            { id: 103, name: "Phantom X Wireless Mouse", category: "Mouse", price: 36260.00, description: "Weighs only 60g, 25,000 DPI sensor, 1000Hz polling rate. Titanium shell with PTFE feet for frictionless glide. 100-hour battery life.", 
+              image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRk9NpBsCaxo9f_1lmxF4D2taj2ogFt6DRLJGW5vf-k2A&s" },
+            { id: 104, name: "Aura RGB Light Bar (2x)", category: "RGB Lights", price: 25197.00, description: "Smart ambient lighting system. 16.8 million colors, syncs with game audio and screen action. Ultra-low heat output, easy magnetic mounting.", 
+              image: "https://dlcdnwebimgs.asus.com/files/media/BF0909DA-FEFF-4420-B071-71E7495E0C7E/v1/images/mode-5.webp" },
+            { id: 105, name: "Sentinel 7.1 Headset Pro", category: "Headphones", price: 69720.00, description: "50mm high-density neodymium drivers. True 7.1 surround sound. Broadcast-quality noise-cancelling mic. Carbon fiber and memory foam comfort.", 
+              image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8dxzZdHXWTlE_oUgfdZXTsW-ay8w1H8xHd8yVbDSCfRXkzxBnlUKrPfg9&s=10" },
+            { id: 106, name: "Apex Pro Modular Controller", category: "Controller", price: 50397.00, description: "Elite controller for PS5/PC. Four customizable back paddles, adjustable trigger stops, swappable analog sticks. Military-grade tactile feedback.", 
+              image: "https://lazymart.co.uk/cdn/shop/files/Apex_5_Controller.webp?v=1752777281" },
+        ];
+
+        let cart = []; // Array of { id: number, name: string, price: number, quantity: number }
+
+        // --- UTILITY FUNCTIONS ---
+
+        function formatCurrency(amount) {
+            // Updated to display Pakistani Rupees with thousand separators
+            const formattedAmount = amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            return 'Rs ' + formattedAmount;
+        }
+
+        function calculateCartTotal() {
+            return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+        }
+        
+        // --- AUTHENTICATION LOGIC (SIMULATED) ---
+
+        function updateAuthUI() {
+            const authBtn = document.getElementById('auth-btn');
+            
+            if (isLoggedIn) {
+                // Change button style and text for logged-in user
+                authBtn.classList.remove('text-bloody-accent', 'border-bloody-accent', 'hover:bg-bloody-accent', 'hover:text-bloody-dark');
+                authBtn.classList.add('text-green-400', 'border-green-400', 'hover:bg-green-700', 'hover:text-white');
+                
+                let displayName = userName.length > 0 ? userName : "Slayer";
+                if (displayName.toLowerCase() === 'guest') {
+                     authBtn.innerHTML = '<i data-lucide="user-check" class="w-4 h-4 mr-2"></i> Guest Access';
+                } else {
+                     // Capitalize first letter of username for better display
+                     displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
+                     authBtn.innerHTML = `<i data-lucide="user-check" class="w-4 h-4 mr-2"></i> Welcome, ${displayName}!`;
+                }
+
+                // Logged in users cannot open the modal with this button
+                authBtn.onclick = () => { console.log('Already logged in!'); };
+            } else {
+                // Revert to original style for logged-out user
+                authBtn.classList.add('text-bloody-accent', 'border-bloody-accent', 'hover:bg-bloody-accent', 'hover:text-bloody-dark');
+                authBtn.classList.remove('text-green-400', 'border-green-400', 'hover:bg-green-700', 'hover:text-white');
+                authBtn.textContent = 'Login / Sign Up';
+                authBtn.onclick = () => toggleModal('authModal');
+            }
+            lucide.createIcons();
+        }
+
+        function handleLogin(inputName = null) {
+            const statusEl = document.getElementById('auth-status');
+            const emailInput = document.getElementById('auth-email');
+            const pass = document.getElementById('auth-password').value;
+            statusEl.classList.add('hidden'); 
+            statusEl.classList.remove('text-red-500', 'text-green-500');
+
+            if (inputName) {
+                // Handle Guest Login
+                userName = inputName;
+                isLoggedIn = true;
+                toggleModal('authModal');
+                updateAuthUI();
+                console.log(`User logged in as: ${userName}`);
+                return;
+            }
+
+            const email = emailInput.value;
+
+            // 1. Check for '@missing'
+            if (!email.includes('@')) {
+                statusEl.textContent = 'Error: @missing in email address.';
+                statusEl.classList.remove('hidden');
+                statusEl.classList.add('text-red-500');
+                return;
+            }
+
+            // 2. Simple front-end validation simulation: success if email is long enough and pass >= 6 chars
+            if (email.length > 5 && pass.length >= 6) {
+                // Extract username part (before the @) for display
+                userName = email.substring(0, email.indexOf('@'));
+                isLoggedIn = true;
+                toggleModal('authModal');
+                updateAuthUI();
+                document.getElementById('auth-form').reset();
+            } else {
+                statusEl.textContent = 'Login failed. Check password length (must be 6+ characters).';
+                statusEl.classList.remove('hidden');
+                statusEl.classList.add('text-red-500');
+            }
+        }
+
+        document.getElementById('auth-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            handleLogin();
+        });
+
+
+        // --- CART LOGIC ---
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const cartCount = document.getElementById('cart-count');
+            const cartTotalDisplay = document.getElementById('cart-total-display');
+            const formTotalDisplay = document.getElementById('form-total-display');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            container.innerHTML = '';
+            const total = calculateCartTotal();
+            cartTotalDisplay.textContent = formatCurrency(total);
+            formTotalDisplay.textContent = formatCurrency(total);
+            cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+            if (cart.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-10">Your cart is empty. Acquire gear.</p>';
+                checkoutBtn.disabled = true;
+            } else {
+                checkoutBtn.disabled = false;
+                cart.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'flex items-center justify-between p-3 bg-gray-800 rounded-lg shadow-inner';
+                    itemElement.innerHTML = `
+                        <div>
+                            <p class="font-semibold text-bloody-light">${item.name}</p>
+                            <p class="text-sm text-gray-400">${formatCurrency(item.price)} x ${item.quantity}</p>
+                            <p class="text-sm font-bold text-bloody-accent">${formatCurrency(item.price * item.quantity)}</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="updateCartItem(${item.id}, -1)" class="p-1 bg-gray-700 rounded-full hover:bg-bloody-red transition duration-200">
+                                <i data-lucide="minus" class="w-4 h-4 text-white"></i>
+                            </button>
+                            <span class="text-white">${item.quantity}</span>
+                            <button onclick="updateCartItem(${item.id}, 1)" class="p-1 bg-gray-700 rounded-full hover:bg-bloody-accent transition duration-200">
+                                <i data-lucide="plus" class="w-4 h-4 text-white"></i>
+                            </button>
+                            <button onclick="removeFromCart(${item.id})" class="p-1 text-bloody-red hover:text-red-700 transition duration-200 ml-2">
+                                <i data-lucide="trash-2" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(itemElement);
+                    lucide.createIcons(); // Re-render icons after adding content
+                });
+            }
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ id: product.id, name: product.name, price: product.price, quantity: 1 });
+            }
+
+            updateCartUI();
+        }
+
+        function updateCartItem(productId, change) {
+            const item = cart.find(i => i.id === productId);
+            if (!item) return;
+
+            item.quantity += change;
+
+            if (item.quantity <= 0) {
+                removeFromCart(productId);
+            } else {
+                updateCartUI();
+            }
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartUI();
+        }
+
+        // --- RENDER FUNCTIONS ---
+
+        function renderProducts() {
+            const container = document.getElementById('product-list');
+            container.innerHTML = products.map(product => {
+                // Now, product.image contains the direct URL, no prefix needed.
+                const imgSrc = product.image;
+                    
+                return `
+                    <div class="luxury-card rounded-xl p-4 flex flex-col items-start text-left">
+                        <!-- Use the direct image source -->
+                        <img src="${imgSrc}" 
+                             alt="${product.name}" 
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/cc0000/ffffff?text=Image+Missing'"
+                             class="w-full h-48 object-cover rounded-lg mb-4 border-2 border-bloody-red/30"
+                        >
+                        <h3 class="text-xl font-bold text-bloody-light mb-1">${product.name}</h3>
+                        <p class="text-sm text-bloody-red uppercase font-semibold mb-3">${product.category}</p>
+                        <p class="text-xs text-gray-400 mb-4 flex-grow">${product.description}</p>
+                        <div class="mt-auto flex justify-between items-center w-full pt-4 border-t border-gray-800">
+                            <span class="text-2xl font-extrabold text-bloody-accent">${formatCurrency(product.price)}</span>
+                            <button onclick="addToCart(${product.id})" class="px-4 py-2 bg-bloody-red text-white font-semibold rounded-lg hover:bg-red-700 transition duration-300 flex items-center">
+                                <i data-lucide="shopping-bag" class="w-4 h-4 mr-1"></i> Acquire
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        // --- SLIDESHOW LOGIC ---
+
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
+            });
+            currentSlide = index;
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        // Set interval for auto-change (5 seconds)
+        setInterval(nextSlide, 5000);
+
+        // --- UI & EVENT HANDLERS ---
+
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            const isHidden = modal.classList.contains('hidden');
+
+            if (isHidden) {
+                modal.classList.remove('hidden');
+                // Cart Drawer animation
+                if (modalId === 'cartModal') {
+                    document.getElementById('cart-drawer').classList.remove('translate-x-full');
+                    document.getElementById('cart-drawer').classList.add('translate-x-0');
+                }
+                 // Reset Auth status when opening
+                if (modalId === 'authModal') {
+                    document.getElementById('auth-status').classList.add('hidden');
+                    document.getElementById('auth-form').reset();
+                }
+            } else {
+                // Cart Drawer animation
+                if (modalId === 'cartModal') {
+                    document.getElementById('cart-drawer').classList.remove('translate-x-0');
+                    document.getElementById('cart-drawer').classList.add('translate-x-full');
+                    setTimeout(() => {
+                        modal.classList.add('hidden');
+                    }, 300); // Match transition duration
+                } else {
+                    modal.classList.add('hidden');
+                }
+            }
+        }
+
+        // Helper function to close the mobile menu
+        function closeMobileMenu() {
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
+
+        // Hamburger Menu Logic - now works for all sizes
+        document.getElementById('hamburger-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Order Form Submission
+        document.getElementById('order-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const messageEl = document.getElementById('order-message');
+            messageEl.textContent = 'Order Placed! ID: ' + crypto.randomUUID().substring(0, 8).toUpperCase();
+            messageEl.classList.remove('hidden', 'text-red-500');
+            messageEl.classList.add('text-green-500');
+
+            cart = [];
+            updateCartUI();
+            this.reset();
+
+            setTimeout(() => {
+                toggleModal('orderModal');
+                messageEl.classList.add('hidden');
+            }, 3000);
+        });
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            showSlide(0); // Initialize first slide
+            renderProducts(); // Render product cards
+            updateCartUI(); // Initialize cart display
+            updateAuthUI(); // Initialize auth button
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>
+
